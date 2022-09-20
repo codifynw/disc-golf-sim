@@ -17,4 +17,3 @@ function toYards(meters) {
 function toRPM(rps) {
   return rps * 9.54929659;
 }
-

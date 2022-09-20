@@ -1,59 +1,73 @@
 (function () {
+  window.DrawLib = function () {};
 
-    window.DrawLib = function() {
+  DrawLib.getGrid = function (sizeX, sizeZ, step, color) {
+    var adjSizeX = sizeX / 2.0;
+    var adjSizeZ = sizeZ / 2.0;
+    var geometry = new THREE.Geometry();
+    var material = new THREE.LineBasicMaterial({
+      vertexColors: THREE.VertexColors,
+      opacity: 0.2,
+    });
 
+    for (var i = -adjSizeX; i <= adjSizeX; i += step) {
+      for (var j = -adjSizeZ; j <= adjSizeZ; j += step) {
+        geometry.vertices.push(
+          new THREE.Vector3(-adjSizeX, 0, j),
+          new THREE.Vector3(adjSizeX, 0, j),
+          new THREE.Vector3(i, 0, -adjSizeZ),
+          new THREE.Vector3(i, 0, adjSizeZ)
+        );
+
+        geometry.colors.push(color, color, color, color);
+      }
     }
 
-    DrawLib.getGrid = function(sizeX, sizeZ, step, color) {
-        var adjSizeX = sizeX / 2.0;
-        var adjSizeZ = sizeZ / 2.0;
-        var geometry = new THREE.Geometry();
-        var material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, opacity: 0.2 } );
+    var grid = new THREE.Line(geometry, material, THREE.LinePieces);
+    return grid;
+  };
 
-        for ( var i = - adjSizeX; i <= adjSizeX; i += step ) {
-            for ( var j = - adjSizeZ; j <= adjSizeZ; j += step ) {
-                geometry.vertices.push(
-                    new THREE.Vector3( - adjSizeX, 0, j ), new THREE.Vector3( adjSizeX, 0, j ),
-                    new THREE.Vector3( i, 0, - adjSizeZ ), new THREE.Vector3( i, 0, adjSizeZ )
-                );
+  DrawLib.getSplinedLine = function (points, interpolationNum, color) {
+    var geometry = new THREE.Geometry();
+    var spline = new THREE.Spline(points);
 
-                geometry.colors.push( color, color, color, color );
-            }
-        }
-
-        var grid = new THREE.Line(geometry, material, THREE.LinePieces );
-        return grid;
+    for (var i = 0; i < points.length * interpolationNum; i++) {
+      var index = i / (points.length * interpolationNum);
+      var position = spline.getPoint(index);
+      geometry.vertices[i] = new THREE.Vector3(
+        position.x,
+        position.y,
+        position.z
+      );
+      geometry.colors[i] = color;
     }
 
-    DrawLib.getSplinedLine = function(points, interpolationNum, color) {
-        var geometry = new THREE.Geometry();  
-        var spline = new THREE.Spline(points);
+    var material = new THREE.LineBasicMaterial({
+      color: color,
+      opacity: 1.0,
+      linewidth: 2,
+    });
+    var line = new THREE.Line(geometry, material);
 
-        for (var i = 0; i < points.length * interpolationNum; i++) {
-          var index = i / (points.length * interpolationNum);
-          var position = spline.getPoint(index);
-          geometry.vertices[i] = new THREE.Vector3(position.x, position.y, position.z);
-          geometry.colors[i] = color;
-        }
+    return line;
+  };
 
-        var material = new THREE.LineBasicMaterial({ color: color, opacity: 1.0, linewidth: 2 });
-        var line = new THREE.Line(geometry, material);
+  DrawLib.getBallParticles = function (points) {
+    var geometry = new THREE.Geometry();
+    geometry.vertices = points;
 
-        return line;   
-    }
+    var sprite = THREE.ImageUtils.loadTexture("/images/ball.png");
+    var material = new THREE.ParticleSystemMaterial({
+      size: 1,
+      sizeAttenuation: true,
+      map: sprite,
+      transparent: true,
+    });
+    material.color.setHSL(1.0, 0.2, 0.7);
 
-    DrawLib.getBallParticles = function(points) {
-        var geometry = new THREE.Geometry();
-        geometry.vertices = points;
+    var particles = new THREE.ParticleSystem(geometry, material);
+    particles.sortParticles = true;
 
-        var sprite = THREE.ImageUtils.loadTexture( "/images/ball.png" );
-        var material = new THREE.ParticleSystemMaterial(  { size: 1, sizeAttenuation: true, map: sprite, transparent: true }  );
-        material.color.setHSL( 1.0, 0.2, 0.7 );
-
-        var particles = new THREE.ParticleSystem(geometry, material); 
-        particles.sortParticles = true;
-
-        return particles;
-    }
-
+    return particles;
+  };
 })();
