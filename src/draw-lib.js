@@ -7,7 +7,7 @@
     var geometry = new THREE.Geometry();
     var material = new THREE.LineBasicMaterial({
       vertexColors: THREE.VertexColors,
-      opacity: 0.2,
+      opacity: 1.0,
     });
 
     for (var i = -adjSizeX; i <= adjSizeX; i += step) {

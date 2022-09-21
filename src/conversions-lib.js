@@ -14,6 +14,10 @@ function toYards(meters) {
   return meters * 1.09361;
 }
 
-function toRPM(rps) {
-  return rps * 9.54929659;
+function toFeet(meters) {
+  return meters * 3.28084;
+}
+
+function toRPM(radianPerSecond) {
+  return radianPerSecond * 9.54929659;
 }

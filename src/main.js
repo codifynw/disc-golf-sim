@@ -20,11 +20,11 @@
   var shotControl = {
     dt: 0.001, //seconds
     displaySpeed: 1.0, // display time multiplier
-    initSpeedMPH: 100,
-    initVerticalAngleDegrees: 22,
-    initHorizontalAngleDegrees: 9,
-    initBackspinRPM: 6000,
-    initSpinAngle: 45,
+    initSpeedMPH: 50,
+    initVerticalAngleDegrees: 10,
+    initHorizontalAngleDegrees: 0,
+    initBackspinRPM: 0,
+    initSpinAngle: 0,
     shoot: beginShot,
   };
   var sceneZOffset;
@@ -202,7 +202,7 @@
       if (point == null) {
         return;
       }
-      var convertedPosition = point.position.clone().multiplyScalar(toYards(1)); // convert meters to yards
+      var convertedPosition = point.position.clone().multiplyScalar(toFeet(1)); // convert meters to feet
       points.push(convertedPosition);
 
       // draw interpolated line
