@@ -128,8 +128,7 @@
     camera.position.z = (-gridHeight / 2.0) * 1.3;
 
     // add ground grid
-    var gridColor = new THREE.Color(0x69ba6d);
-    var grid = DrawLib.getGrid(gridWidth, gridHeight, 25, gridColor);
+    var grid = DrawLib.getGrid(gridWidth, gridHeight, 25);
     grid.position.z = sceneZOffset + gridHeight / 2.0;
     scene.add(grid);
 
@@ -194,7 +193,6 @@
     var rawTimeElapsed = now - displayStartTime;
     var displayTimeElapsed = Math.floor(displaySpeed * rawTimeElapsed);
     var initPoint = new THREE.Vector3(0, 0, sceneZOffset);
-    var lineColor = new THREE.Color(0xe34f4f);
     var splineInterpolationNum = 2;
 
     if (displayTimeElapsed <= shot.points.length) {
@@ -202,6 +200,7 @@
       if (point == null) {
         return;
       }
+
       var convertedPosition = point.position.clone().multiplyScalar(toFeet(1)); // convert meters to feet
       points.push(convertedPosition);
 
@@ -209,9 +208,9 @@
       var newline = DrawLib.getSplinedLine(
         points,
         splineInterpolationNum,
-        lineColor
+        point.color
       );
-      scene.remove(line);
+      //   scene.remove(line);
       line = newline;
       line.position = initPoint;
       scene.add(line);

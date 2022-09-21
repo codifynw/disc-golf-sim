@@ -15,6 +15,11 @@
     this.gravityMagnitude = -9.8; // 9.8 m/s^2
     this.airDensity = 1.2041; // kg/m^3
 
+    this.windDirection =
+      options.windDirection == null ? 90 : options.windDirection; // degrees
+    this.windSpeed = options.windSpeed == null ? 5 : options.windSpeed; // m/s
+    this.area = 0.0005; // m^2  (will have to refine based on tilt angle of the disc)
+
     // golf ball aerodynamics properties
     this.dragCoefficient =
       options.dragCoefficient == null ? 0.4 : options.dragCoefficient;
@@ -94,7 +99,13 @@
 
       this.points.push(newPoint);
 
+      newPoint.color = "#ffffff";
+      if (newPoint.position.y < lastPoint.position.y) {
+        newPoint.color = "#ff0000";
+      }
+
       if (newPoint.position.y <= 0) {
+        console.log(this.points);
         break;
       }
 
@@ -102,9 +113,29 @@
     }
   };
 
+  Shot.prototype.getWindAcceleration = function (point) {
+    var wind = new THREE.Vector3(0, 0, 0);
+
+    if (point.velocity.y > 0) {
+      wind.x = Math.sin((this.windDirection * Math.PI) / 180);
+      wind.z = Math.cos((this.windDirection * Math.PI) / 180);
+      wind.normalize().multiplyScalar(this.windSpeed * 0.2);
+    } else {
+      wind.x = Math.sin((this.windDirection * Math.PI) / 180);
+      wind.z = Math.cos((this.windDirection * Math.PI) / 180);
+      wind.normalize().multiplyScalar(this.windSpeed * -2.0);
+    }
+
+    return wind;
+  };
+
   Shot.prototype.getAcceleration = function (currentPoint) {
     // gravity: -9.8 m/s^2
     var gravityAcceleration = new THREE.Vector3(0, this.gravityMagnitude, 0);
+    // var windAcceleration = new THREE.Vector3(-10, 0, 0);
+
+    // wind
+    var windAcceleration = this.getWindAcceleration(currentPoint);
 
     // drag acceleration = drag force / mass
     var adjustedDragCoefficient =
@@ -129,7 +160,10 @@
     var totalAccel = new THREE.Vector3(0, 0, 0)
       .add(gravityAcceleration)
       .add(dragForceAcceleration)
-      .add(magnusForceAcceleration);
+      .add(magnusForceAcceleration)
+      .add(windAcceleration);
+
+    debugger;
 
     return totalAccel;
   };

@@ -1,7 +1,8 @@
 (function () {
   window.DrawLib = function () {};
 
-  DrawLib.getGrid = function (sizeX, sizeZ, step, color) {
+  DrawLib.getGrid = function (sizeX, sizeZ, step) {
+    var gridColor = new THREE.Color(0x69ba6d);
     var adjSizeX = sizeX / 2.0;
     var adjSizeZ = sizeZ / 2.0;
     var geometry = new THREE.Geometry();
@@ -19,7 +20,7 @@
           new THREE.Vector3(i, 0, adjSizeZ)
         );
 
-        geometry.colors.push(color, color, color, color);
+        geometry.colors.push(gridColor, gridColor, gridColor, gridColor);
       }
     }
 
@@ -34,6 +35,7 @@
     for (var i = 0; i < points.length * interpolationNum; i++) {
       var index = i / (points.length * interpolationNum);
       var position = spline.getPoint(index);
+
       geometry.vertices[i] = new THREE.Vector3(
         position.x,
         position.y,
