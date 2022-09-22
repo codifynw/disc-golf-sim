@@ -6,21 +6,20 @@
 
     options = options || {};
 
-    // golf ball properties
+    // frisbee disc properties
     this.mass = 0.0459; // kg; from 1.62 ounces
     this.crossSectionalArea = (0.04267 * Math.PI) / 4; //m^2
-    this.smashFactor = options.smashFactor == null ? 1.49 : options.smashFactor; // clubhead-to-ball-initial speed ratio
 
     // nature
     this.gravityMagnitude = -9.8; // 9.8 m/s^2
     this.airDensity = 1.2041; // kg/m^3
 
     this.windDirection =
-      options.windDirection == null ? 90 : options.windDirection; // degrees
+      options.windDirection == null ? -90 : options.windDirection; // degrees
     this.windSpeed = options.windSpeed == null ? 5 : options.windSpeed; // m/s
     this.area = 0.0005; // m^2  (will have to refine based on tilt angle of the disc)
 
-    // golf ball aerodynamics properties
+    // frisbee disc aerodynamics properties
     this.dragCoefficient =
       options.dragCoefficient == null ? 0.4 : options.dragCoefficient;
     this.liftCoefficient =
@@ -40,7 +39,6 @@
     // initial velocity
     initPoint.velocity = this.getInitialVelocity(
       this.initSpeedMPH,
-      this.smashFactor,
       this.initVerticalAngleDegrees,
       this.initHorizontalAngleDegrees
     );
@@ -66,7 +64,6 @@
 
   Shot.prototype.getInitialVelocity = function (
     speedMPH,
-    smashFactor,
     verticalDegrees,
     horizontalDegrees
   ) {
@@ -75,9 +72,9 @@
     velocity.y = Math.sin((verticalDegrees * Math.PI) / 180);
     velocity.z = Math.cos((verticalDegrees * Math.PI) / 180);
 
-    var ballSpeed = toMPS(speedMPH * smashFactor);
+    var discSpeed = toMPS(speedMPH);
 
-    return velocity.normalize().multiplyScalar(ballSpeed);
+    return velocity.normalize().multiplyScalar(discSpeed);
   };
 
   Shot.prototype.projectShot = function (initPoint) {
@@ -150,7 +147,7 @@
           this.mass
       );
 
-    // magnus acceleration (from ball spin) = magnus force / mass
+    // magnus acceleration (from disc spin) = magnus force / mass
     var magnusForceAcceleration = currentPoint.angularVelocity
       .clone()
       .cross(currentPoint.velocity)
