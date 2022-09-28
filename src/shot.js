@@ -160,8 +160,6 @@
       .add(magnusForceAcceleration)
       .add(windAcceleration);
 
-    debugger;
-
     return totalAccel;
   };
 
