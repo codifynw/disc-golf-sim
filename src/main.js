@@ -5,6 +5,7 @@
   var renderer;
   var scene;
   var camera;
+  var mapCamera;
   var controls;
   var stats;
   var gui;
@@ -66,7 +67,18 @@
       0.1,
       20000
     );
-    camera.lookAt(scene.position);
+
+    mapCamera = new THREE.OrthographicCamera(
+      -200, // Left
+      1000, // Right
+      1500, // Top
+      -300, // Bottom
+      -500, // Near
+      500 // Far
+    );
+    mapCamera.up = new THREE.Vector3(0, 0, 1);
+    mapCamera.lookAt(new THREE.Vector3(0, -1, 0));
+    scene.add(mapCamera);
 
     // Add OrbitControls so that we can pan around with the mouse.
     controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -98,6 +110,13 @@
     stats.update();
     renderer.render(scene, camera);
 
+    renderer.enableScissorTest(true);
+    renderer.setScissor(0, 0, containerWidth / 3, containerHeight / 3);
+
+    renderer.setViewport(0, 0, containerWidth, containerHeight);
+    renderer.render(scene, mapCamera);
+    renderer.enableScissorTest(false);
+
     if (shot) {
       updateShot();
     }
@@ -126,6 +145,7 @@
     camera.position.x = 0;
     camera.position.y = 20;
     camera.position.z = (-gridHeight / 2.0) * 1.3;
+    camera.lookAt(scene.position);
 
     // add ground grid
     var grid = DrawLib.getGrid(gridWidth, gridHeight, 25);
