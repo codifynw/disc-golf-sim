@@ -107,18 +107,32 @@
   }
 
   function addEventListeners() {
-    document.getElementById("driver-RH").addEventListener("click", function () {
-      shotControl.initSpeedMPH = 100;
-      shotControl.initVerticalAngleDegrees = 20;
-      shotControl.initHorizontalAngleDegrees = 8;
-      shotControl.initBackspinRPM = 0;
-      shotControl.initSpinAngle = 0;
-      shotControl.magnusEffect = -90;
-      beginShot();
-    });
+    document
+      .getElementById("driver-RH-BH")
+      .addEventListener("click", function () {
+        shotControl.initSpeedMPH = 120;
+        shotControl.initVerticalAngleDegrees = 20;
+        shotControl.initHorizontalAngleDegrees = 8;
+        shotControl.initBackspinRPM = 0;
+        shotControl.initSpinAngle = 0;
+        shotControl.magnusEffect = -90;
+        beginShot();
+      });
+
+    document
+      .getElementById("driver-RH-FH")
+      .addEventListener("click", function () {
+        shotControl.initSpeedMPH = 150;
+        shotControl.initVerticalAngleDegrees = 15;
+        shotControl.initHorizontalAngleDegrees = -5;
+        shotControl.initBackspinRPM = 0;
+        shotControl.initSpinAngle = 0;
+        shotControl.magnusEffect = 90;
+        beginShot();
+      });
 
     document.getElementById("driver-LH").addEventListener("click", function () {
-      shotControl.initSpeedMPH = 100;
+      shotControl.initSpeedMPH = 120;
       shotControl.initVerticalAngleDegrees = 20;
       shotControl.initHorizontalAngleDegrees = -8;
       shotControl.initBackspinRPM = 0;
@@ -143,6 +157,26 @@
     renderer.setViewport(0, 0, containerWidth, containerHeight);
     renderer.render(scene, mapCamera);
     renderer.enableScissorTest(false);
+
+    // Set up an effect composer
+    composer = new THREE.EffectComposer(renderer);
+    composer.setSize(window.innerWidth, window.innerHeight);
+
+    // Tell composer that first pass is rendering scene to buffer
+    var renderScene = new THREE.RenderPass(scene, camera);
+    composer.addPass(renderScene);
+
+    // Tell composer that second pass is adding bloom effect
+    var bloomPass = new THREE.UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.5,
+      0.4,
+      0.85
+    );
+    composer.addPass(bloomPass);
+
+    // Tells composer that second pass gets rendered to screen
+    bloomPass.renderToScreen = true;
 
     if (shot) {
       updateShot();

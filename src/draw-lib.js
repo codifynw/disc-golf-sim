@@ -2,7 +2,7 @@
   window.DrawLib = function () {};
 
   DrawLib.getGrid = function (sizeX, sizeZ, step) {
-    var gridColor = new THREE.Color(0x69ba6d);
+    var gridColor = new THREE.Color(0x00ffff);
     var adjSizeX = sizeX / 2.0;
     var adjSizeZ = sizeZ / 2.0;
     var geometry = new THREE.Geometry();
