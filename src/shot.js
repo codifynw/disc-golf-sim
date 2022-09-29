@@ -1,5 +1,8 @@
 (function () {
   window.Shot = function (options) {
+    console.log("****");
+    console.log(options);
+    console.log("****");
     this.points = [];
     var initPoint = new ShotPoint();
     initPoint.position = new THREE.Vector3(0, 0, 0);
@@ -15,7 +18,7 @@
     this.airDensity = 1.2041; // kg/m^3
 
     this.windDirection =
-      options.windDirection == null ? -90 : options.windDirection; // degrees
+      options.magnusEffect == null ? -90 : options.magnusEffect; // degrees
     this.windSpeed = options.windSpeed == null ? 5 : options.windSpeed; // m/s
     this.area = 0.0005; // m^2  (will have to refine based on tilt angle of the disc)
 

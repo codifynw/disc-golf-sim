@@ -28,9 +28,61 @@
         top: 20px;
         right: 20px;        
       }
+      #disc-selection-wrap {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: row;
+        width: 800px;
+        height: 200px;
+        border: 1px solid green;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .disc {
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+      .disc-title {
+        margin-bottom: 20px;
+      }
     </style>
   </head>
   <body>
+    <div id="disc-selection-wrap">
+        <div class="disc">
+            <div class="disc-title">Driver</div>
+            <div>13 | 5 | -1 | 2</div>
+            <div>Stable</div>
+            <div id="driver-RH"" class="throw">Throw RH</div>
+            <div id="driver-LH" class="throw">Throw LH</div>
+        </div>
+        <div class="disc">
+            <div class="disc-title">Fairway</div>
+            <div>7 | 4 | -4 | 1</div>
+            <div>Understable</div>
+            <div class="throw">Throw RH</div>
+            <div class="throw">Throw LH</div>
+        </div>
+        <div class="disc">
+            <div class="disc-title">Mid-range</div>
+            <div>5 | 5 | -1 | 1</div>
+            <div>Stable</div>
+            <div class="throw">Throw RH</div>
+            <div class="throw">Throw LH</div>
+        </div>
+        <div class="disc">
+            <div class="disc-title">Driver</div>
+            <div>13 | 5 | -1 | 2</div>
+            <div>Stable</div>
+            <div class="throw">Throw RH</div>
+            <div class="throw">Throw LH</div>
+        </div>
+    </div>
     <div id="display-container">
       <div id="status-display">
         <ul>

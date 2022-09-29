@@ -26,6 +26,7 @@
     initHorizontalAngleDegrees: 0,
     initBackspinRPM: 0,
     initSpinAngle: 0,
+    magnusEffect: 0,
     shoot: beginShot,
   };
   var sceneZOffset;
@@ -91,6 +92,7 @@
     gui.add(shotControl, "initHorizontalAngleDegrees", -45, 45);
     gui.add(shotControl, "initBackspinRPM", 0, 6000);
     gui.add(shotControl, "initSpinAngle", -45, 45);
+    gui.add(shotControl, "magnusEffect", -90, 90);
     gui.add(shotControl, "displaySpeed", 0, 5);
     gui.add(shotControl, "shoot");
 
@@ -101,6 +103,31 @@
     addInitialElements();
 
     beginShot();
+    addEventListeners();
+  }
+
+  function addEventListeners() {
+    document.getElementById("driver-RH").addEventListener("click", function () {
+      shotControl.initSpeedMPH = 100;
+      shotControl.initVerticalAngleDegrees = 20;
+      shotControl.initHorizontalAngleDegrees = 8;
+      shotControl.initBackspinRPM = 0;
+      shotControl.initSpinAngle = 0;
+      shotControl.magnusEffect = -90;
+      beginShot();
+    });
+
+    document.getElementById("driver-LH").addEventListener("click", function () {
+      shotControl.initSpeedMPH = 100;
+      shotControl.initVerticalAngleDegrees = 20;
+      shotControl.initHorizontalAngleDegrees = -8;
+      shotControl.initBackspinRPM = 0;
+      shotControl.initSpinAngle = 0;
+      shotControl.magnusEffect = 90;
+      beginShot({
+        windDirection: 90,
+      });
+    });
   }
 
   function animate() {
