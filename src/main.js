@@ -70,10 +70,10 @@
     );
 
     mapCamera = new THREE.OrthographicCamera(
-      -200, // Left
-      1000, // Right
+      -150, // Left
+      2000, // Right
       1500, // Top
-      -300, // Bottom
+      -275, // Bottom
       -500, // Near
       500 // Far
     );
@@ -152,31 +152,11 @@
     renderer.render(scene, camera);
 
     renderer.enableScissorTest(true);
-    renderer.setScissor(0, 0, containerWidth / 3, containerHeight / 3);
+    renderer.setScissor(0, 0, 600, 600);
 
-    renderer.setViewport(0, 0, containerWidth, containerHeight);
+    // renderer.setViewport(0, 0, containerWidth, containerHeight);
     renderer.render(scene, mapCamera);
     renderer.enableScissorTest(false);
-
-    // Set up an effect composer
-    composer = new THREE.EffectComposer(renderer);
-    composer.setSize(window.innerWidth, window.innerHeight);
-
-    // Tell composer that first pass is rendering scene to buffer
-    var renderScene = new THREE.RenderPass(scene, camera);
-    composer.addPass(renderScene);
-
-    // Tell composer that second pass is adding bloom effect
-    var bloomPass = new THREE.UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight),
-      1.5,
-      0.4,
-      0.85
-    );
-    composer.addPass(bloomPass);
-
-    // Tells composer that second pass gets rendered to screen
-    bloomPass.renderToScreen = true;
 
     if (shot) {
       updateShot();
@@ -214,8 +194,10 @@
     scene.add(grid);
 
     // add marker indicators
-    var markerColor = 0x00ffff;
-    var textMesh = new THREE.MeshNormalMaterial({ color: markerColor });
+    var markerColor = 0xff0000;
+    var textMesh = new THREE.MeshNormalMaterial({
+      color: markerColor,
+    });
     var markerYardage = 0;
     while (markerYardage < gridHeight) {
       // text
